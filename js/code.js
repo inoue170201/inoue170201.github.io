@@ -56,7 +56,6 @@
       return;
     }
     window.chartNode = event.target;
-    console.log(chartNode.id());
     obj = timecourse_values.find(item => item.id === chartNode.id());
     if (obj === undefined) return; 
     popup = document.getElementById('popup');
@@ -64,8 +63,6 @@
     
     popup.style.left = xcoord+'px';
     popup.style.top = ycoord+'px';
-    console.log(popup.style.left);
-    console.log(popup.style.top);
    
     const ctx = document.getElementById('chart');
 
