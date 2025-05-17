@@ -630,6 +630,7 @@ selectColmaps.addEventListener('change', (e) => {
   document.getElementById("t7").style.color = rgbToHex(evaluate_cmap(0.7, COLORFUNC, false));
   document.getElementById("t8").style.color = rgbToHex(evaluate_cmap(0.8, COLORFUNC, false));
   document.getElementById("t9").style.color = rgbToHex(evaluate_cmap(0.9, COLORFUNC, false));
+  animation_step();
 });
 
 
