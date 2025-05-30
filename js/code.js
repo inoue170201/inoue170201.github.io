@@ -56,6 +56,7 @@
       return;
     }
     window.chartNode = event.target;
+    //console.log(chartNode.id());
     obj = timecourse_values.find(item => item.id === chartNode.id());
     if (obj === undefined) return; 
     popup = document.getElementById('popup');
@@ -63,6 +64,9 @@
     
     popup.style.left = xcoord+'px';
     popup.style.top = ycoord+'px';
+    popup.style.background = 'white';
+    popup.style.border = 'solid';
+
    
     const ctx = document.getElementById('chart');
 
@@ -236,6 +240,7 @@ var cynodes = cy.nodes().filter(function(ele) {
 ////////////////////////////
 const btn_menu = document.getElementById("btn_menu");
 const btn_play = document.getElementById("btn_play");
+const btn_save = document.getElementById("btn_save");
 const playback_position = document.getElementById("playback_position");
 const end_position = document.getElementById("end_position");
 const slider_progress = document.getElementById("progress");
@@ -318,6 +323,52 @@ slider_progress.addEventListener("change", (e) => {
   } 
 });
 
+console.log(cy.json().elements.nodes);
+btn_save.addEventListener("click", (e) => {
+  output_txt = "diagram = [";
+  //console.log(cy.json().elements.nodes[0].data.id, cy.json().elements.nodes[0].data.label, cy.json().elements.nodes[0].classes, 
+  //  cy.json().elements.nodes[0].position.x,cy.json().elements.nodes[0].position.y);
+  for(let i=0; i<cy.json().elements.nodes.length; i++){
+    output_txt += "{ data: { id: '";
+    output_txt += cy.json().elements.nodes[i].data.id;
+    output_txt += "',label: '";
+    output_txt += cy.json().elements.nodes[i].data.label;
+    output_txt += "'}, classes:'";
+    output_txt += cy.json().elements.nodes[i].classes;
+    output_txt += "', position: { x: ";
+    output_txt += cy.json().elements.nodes[i].position.x;
+    output_txt += ", y: ";
+    output_txt += cy.json().elements.nodes[i].position.y;
+    output_txt += "}},\n";
+  }
+  //console.log(cy.json().elements.edges[0].data.id, cy.json().elements.nodes[0].data.label, 
+  //  cy.json().elements.edges[0].data.source, cy.json().elements.edges[0].data.target, cy.json().elements.edges[0].data.tcID,
+  //  cy.json().elements.edges[0].classes);
+  for(let i=0; i<cy.json().elements.edges.length; i++){
+    output_txt += "{ data: { id: '";
+    output_txt += cy.json().elements.edges[i].data.id;
+    output_txt += "', source: '";
+    output_txt += cy.json().elements.edges[i].data.source;
+    output_txt += "', target: '";
+    output_txt += cy.json().elements.edges[i].data.target;
+    output_txt += "', tcID: '";
+    output_txt += cy.json().elements.edges[i].data.tcID;
+    output_txt += "', label: '";
+    output_txt += cy.json().elements.edges[i].data.label;
+    output_txt += "'}, classes: '";
+    output_txt += cy.json().elements.edges[i].classes;
+    output_txt += "'},\n";
+  }
+  output_txt += "];\n";
+  
+  const blob = new Blob([output_txt], {type: "text/plain"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "diagram.txt";
+  a.click();
+  URL.revokeObjectURL(url);
+});
 ////////////////////////////
 //control
 var NET_LAYOUT = ['breadthfirst', 'cola', 'cose-bilkent', 'dagre', 'grid', 'random', 'circle', 'concentric', 'cose'];
@@ -630,7 +681,6 @@ selectColmaps.addEventListener('change', (e) => {
   document.getElementById("t7").style.color = rgbToHex(evaluate_cmap(0.7, COLORFUNC, false));
   document.getElementById("t8").style.color = rgbToHex(evaluate_cmap(0.8, COLORFUNC, false));
   document.getElementById("t9").style.color = rgbToHex(evaluate_cmap(0.9, COLORFUNC, false));
-  animation_step();
 });
 
 
