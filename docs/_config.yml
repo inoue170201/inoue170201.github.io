@@ -1,0 +1,10 @@
+title: Program repository
+theme: just-the-docs
+
+baseurl: docs
+
+defaults:
+  - scope:
+      path: "**/*.md"
+    values:
+      layout: "default"
